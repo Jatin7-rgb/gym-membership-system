@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Be More Fit</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#0099ff;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="20" cy="50" r="8" fill="url(#logoGradient)"/>
+                    <rect x="28" y="48" width="44" height="4" fill="url(#logoGradient)"/>
+                    <circle cx="80" cy="50" r="8" fill="url(#logoGradient)"/>
+                    <path d="M 35 30 Q 50 15 65 30" stroke="url(#logoGradient)" stroke-width="2" fill="none"/>
+                    <path d="M 35 70 Q 50 85 65 70" stroke="url(#logoGradient)" stroke-width="2" fill="none"/>
+                </svg>
+                <h1>Be More Fit</h1>
+                <p>Create Your Account</p>
+            </div>
+
+            <form id="signupForm" class="auth-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName" required placeholder="John">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" required placeholder="Doe">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required placeholder="john@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required placeholder="Create a strong password">
+                    <small>Minimum 6 characters</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password">
+                </div>
+
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">I agree to the Terms & Conditions</label>
+                </div>
+
+                <button type="submit" class="btn-primary full-width">Create Account</button>
+
+                <div class="form-message" id="formMessage"></div>
+            </form>
+
+            <p class="auth-footer">
+                Already have an account? <a href="/login">Login here</a>
+            </p>
+
+            <a href="/" class="back-home">← Back to Home</a>
+        </div>
+
+        <div class="floating-shapes-auth">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const messageDiv = document.getElementById('formMessage');
+
+            if (password !== confirmPassword) {
+                messageDiv.style.color = '#ff006e';
+                messageDiv.textContent = 'Passwords do not match';
+                return;
+            }
+
+            if (password.length < 6) {
+                messageDiv.style.color = '#ff006e';
+                messageDiv.textContent = 'Password must be at least 6 characters';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/auth/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, firstName, lastName, phone })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('userId', data.userId);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    messageDiv.style.color = '#00d4ff';
+                    messageDiv.textContent = 'Account created! Redirecting...';
+                    setTimeout(() => {
+                        window.location.href = '/questionnaire';
+                    }, 1500);
+                } else {
+                    messageDiv.style.color = '#ff006e';
+                    messageDiv.textContent = data.message || 'Signup failed';
+                }
+            } catch (error) {
+                messageDiv.style.color = '#ff006e';
+                messageDiv.textContent = 'An error occurred. Please try again.';
+            }
+        });
+    </script>
+</body>
+</html>
