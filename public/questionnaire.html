@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Questionnaire - Be More Fit</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="questionnaire-container">
+        <div class="questionnaire-card">
+            <div class="questionnaire-header">
+                <h1>Your Fitness Assessment</h1>
+                <p>Help us understand your fitness goals better</p>
+                <div class="progress-bar">
+                    <div class="progress" id="progressBar" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <form id="questionnaireForm" class="questionnaire-form">
+                <!-- Section 1: Basic Measurements -->
+                <div class="form-section">
+                    <h2>Basic Measurements</h2>
+                    
+                    <div class="form-group">
+                        <label for="age">Age (Years)</label>
+                        <input type="number" id="age" name="age" min="15" max="100" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="height">Height (cm)</label>
+                            <input type="number" id="height" name="height" min="100" max="250" required placeholder="e.g., 175">
+                        </div>
+                        <div class="form-group">
+                            <label for="weight">Weight (kg)</label>
+                            <input type="number" id="weight" name="weight" min="30" max="200" step="0.1" required placeholder="e.g., 75">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Gym Experience -->
+                <div class="form-section">
+                    <h2>Gym Experience</h2>
+                    
+                    <div class="form-group">
+                        <label>Have you been to a gym before?</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="gymExperience" value="beginner" required>
+                                <span>No, I'm a beginner</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="gymExperience" value="intermediate">
+                                <span>Yes, 1-2 years of experience</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="gymExperience" value="advanced">
+                                <span>Yes, 3+ years of experience</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="experienceYears">Years of Training (if applicable)</label>
+                        <input type="number" id="experienceYears" name="experienceYears" min="0" max="50" value="0">
+                    </div>
+                </div>
+
+                <!-- Section 3: Fitness Goals -->
+                <div class="form-section">
+                    <h2>What is Your Primary Goal?</h2>
+                    
+                    <div class="form-group">
+                        <div class="goal-options">
+                            <label class="goal-card">
+                                <input type="radio" name="fitnessGoal" value="weight_loss" required>
+                                <div class="goal-content">
+                                    <span class="goal-icon">⬇️</span>
+                                    <span class="goal-name">Lose Weight</span>
+                                </div>
+                            </label>
+                            <label class="goal-card">
+                                <input type="radio" name="fitnessGoal" value="muscle_gain">
+                                <div class="goal-content">
+                                    <span class="goal-icon">💪</span>
+                                    <span class="goal-name">Build Muscle</span>
+                                </div>
+                            </label>
+                            <label class="goal-card">
+                                <input type="radio" name="fitnessGoal" value="endurance">
+                                <div class="goal-content">
+                                    <span class="goal-icon">🏃</span>
+                                    <span class="goal-name">Increase Endurance</span>
+                                </div>
+                            </label>
+                            <label class="goal-card">
+                                <input type="radio" name="fitnessGoal" value="overall_fitness">
+                                <div class="goal-content">
+                                    <span class="goal-icon">✨</span>
+                                    <span class="goal-name">Overall Fitness</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Additional Goals -->
+                <div class="form-section">
+                    <h2>Additional Goals (Select All That Apply)</h2>
+                    
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="goals" value="flexibility">
+                                <span>Improve Flexibility</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="goals" value="strength">
+                                <span>Increase Strength</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="goals" value="cardio">
+                                <span>Improve Cardiovascular Health</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="goals" value="mental_health">
+                                <span>Mental Health & Stress Relief</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="goals" value="confidence">
+                                <span>Build Confidence</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 5: Health Conditions -->
+                <div class="form-section">
+                    <h2>Health Information</h2>
+                    
+                    <div class="form-group">
+                        <label for="healthConditions">Any Health Conditions or Injuries? (Optional)</label>
+                        <textarea id="healthConditions" name="healthConditions" rows="3" placeholder="E.g., Back pain, knee injury, asthma, etc."></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary full-width">Complete Assessment</button>
+                <div class="form-message" id="formMessage"></div>
+            </form>
+        </div>
+
+        <div class="floating-shapes-auth">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('questionnaireForm');
+        const progressBar = document.getElementById('progressBar');
+        const messageDiv = document.getElementById('formMessage');
+
+        // Update progress bar
+        form.addEventListener('input', updateProgress);
+        form.addEventListener('change', updateProgress);
+
+        function updateProgress() {
+            const inputs = form.querySelectorAll('input[required], textarea');
+            let filled = 0;
+            inputs.forEach(input => {
+                if (input.type === 'radio') {
+                    if (form.querySelector(`input[name="${input.name}"]:checked`)) filled++;
+                } else if (input.value.trim()) {
+                    filled++;
+                }
+            });
+            const progress = (filled / inputs.length) * 100;
+            progressBar.style.width = Math.min(progress, 100) + '%';
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const height = document.getElementById('height').value;
+            const weight = document.getElementById('weight').value;
+            const age = document.getElementById('age').value;
+            const gymExperience = document.querySelector('input[name="gymExperience"]:checked')?.value;
+            const gymExperienceYears = document.getElementById('experienceYears').value;
+            const fitnessGoal = document.querySelector('input[name="fitnessGoal"]:checked')?.value;
+            const healthConditions = document.getElementById('healthConditions').value;
+
+            const goalsCheckboxes = document.querySelectorAll('input[name="goals"]:checked');
+            const goals = Array.from(goalsCheckboxes).map(cb => cb.value).join(', ');
+
+            const token = localStorage.getItem('token');
+
+            try {
+                const response = await fetch('/api/members/fitness-profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        height,
+                        weight,
+                        age,
+                        gymExperience,
+                        gymExperienceYears,
+                        fitnessGoal,
+                        goals,
+                        healthConditions
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    messageDiv.style.color = '#00d4ff';
+                    messageDiv.textContent = 'Assessment complete! Redirecting to membership plans...';
+                    setTimeout(() => {
+                        window.location.href = '/membership';
+                    }, 1500);
+                } else {
+                    messageDiv.style.color = '#ff006e';
+                    messageDiv.textContent = data.message || 'Assessment failed';
+                }
+            } catch (error) {
+                messageDiv.style.color = '#ff006e';
+                messageDiv.textContent = 'An error occurred. Please try again.';
+            }
+        });
+
+        updateProgress();
+    </script>
+</body>
+</html>
