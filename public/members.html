@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Members - Be More Fit</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo-section">
+                <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#0099ff;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="20" cy="50" r="8" fill="url(#logoGradient)"/>
+                    <rect x="28" y="48" width="44" height="4" fill="url(#logoGradient)"/>
+                    <circle cx="80" cy="50" r="8" fill="url(#logoGradient)"/>
+                    <path d="M 35 30 Q 50 15 65 30" stroke="url(#logoGradient)" stroke-width="2" fill="none"/>
+                    <path d="M 35 70 Q 50 85 65 70" stroke="url(#logoGradient)" stroke-width="2" fill="none"/>
+                </svg>
+                <h1>Be More Fit</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/login" class="btn-login">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="members-section">
+            <h1>Gym Members Directory</h1>
+            <p class="subtitle">View all registered members and their information</p>
+
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search members by name or email...">
+            </div>
+
+            <div class="members-table-wrapper">
+                <table class="members-table" id="membersTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Membership Plan</th>
+                            <th>Cost</th>
+                            <th>Expiry Date</th>
+                            <th>Weight (kg)</th>
+                            <th>Height (cm)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="membersBody">
+                        <tr>
+                            <td colspan="8" class="text-center">Loading members...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2024 Be More Fit. Created by Jatin Sanap & Adarsh Patil.</p>
+    </footer>
+
+    <script>
+        let allMembers = [];
+
+        async function loadMembers() {
+            try {
+                const response = await fetch('/api/members/all');
+                const members = await response.json();
+                allMembers = members;
+                displayMembers(members);
+            } catch (error) {
+                console.error('Error loading members:', error);
+                document.getElementById('membersBody').innerHTML = 
+                    '<tr><td colspan="8" class="text-center">Error loading members</td></tr>';
+            }
+        }
+
+        function displayMembers(members) {
+            const tbody = document.getElementById('membersBody');
+            tbody.innerHTML = '';
+
+            if (members.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="text-center">No members found</td></tr>';
+                return;
+            }
+
+            members.forEach(member => {
+                const row = document.createElement('tr');
+                const expiryDate = member.endDate ? new Date(member.endDate).toLocaleDateString() : 'N/A';
+                
+                row.innerHTML = `
+                    <td>${member.firstName} ${member.lastName}</td>
+                    <td>${member.email}</td>
+                    <td>${member.phone || 'N/A'}</td>
+                    <td>${member.planName || 'No Plan'}</td>
+                    <td>${member.cost ? '₹' + member.cost.toLocaleString() : 'N/A'}</td>
+                    <td>${expiryDate}</td>
+                    <td>${member.weight || 'N/A'}</td>
+                    <td>${member.height || 'N/A'}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filtered = allMembers.filter(member => 
+                member.firstName.toLowerCase().includes(searchTerm) ||
+                member.lastName.toLowerCase().includes(searchTerm) ||
+                member.email.toLowerCase().includes(searchTerm)
+            );
+            displayMembers(filtered);
+        });
+
+        loadMembers();
+    </script>
+</body>
+</html>
