@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Be More Fit</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo-section">
+                <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#0099ff;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="20" cy="50" r="8" fill="url(#logoGradient)"/>
+                    <rect x="28" y="48" width="44" height="4" fill="url(#logoGradient)"/>
+                    <circle cx="80" cy="50" r="8" fill="url(#logoGradient)"/>
+                    <path d="M 35 30 Q 50 15 65 30" stroke="url(#logoGradient)" stroke-width="2" fill="none"/>
+                    <path d="M 35 70 Q 50 85 65 70" stroke="url(#logoGradient)" stroke-width="2" fill="none"/>
+                </svg>
+                <h1>Be More Fit</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#dashboard" class="nav-active">Dashboard</a></li>
+                <li><a href="#" onclick="showSection('fitness')">Fitness Profile</a></li>
+                <li><a href="#" onclick="showSection('attendance')">Attendance</a></li>
+                <li><a href="#" onclick="logout()" class="btn-signup">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <!-- Welcome Section -->
+        <section id="dashboard" class="dashboard-section">
+            <div class="container">
+                <div class="welcome-card">
+                    <div class="welcome-content">
+                        <h1>Welcome, <span id="userName">User</span>!</h1>
+                        <p>Ready to transform your fitness journey?</p>
+                    </div>
+                    <div class="welcome-actions">
+                        <button class="btn-primary" onclick="checkIn()">Check In</button>
+                        <button class="btn-secondary" onclick="checkOut()">Check Out</button>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Membership Status</h3>
+                        <p class="stat-value" id="membershipStatus">Loading...</p>
+                        <small id="membershipEnd">Expires: --</small>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Your Goal</h3>
+                        <p class="stat-value" id="fitnessGoal">Loading...</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Current Weight</h3>
+                        <p class="stat-value" id="currentWeight">-- kg</p>
+                        <small id="weightInfo">--</small>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Height</h3>
+                        <p class="stat-value" id="currentHeight">-- cm</p>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h2>Quick Actions</h2>
+                    <div class="quick-actions">
+                        <a href="/membership" class="action-card">
+                            <span class="action-icon">📋</span>
+                            <h4>Upgrade Membership</h4>
+                            <p>Change your plan</p>
+                        </a>
+                        <a href="#" onclick="showSection('fitness')" class="action-card">
+                            <span class="action-icon">📊</span>
+                            <h4>View Fitness Profile</h4>
+                            <p>See your assessment</p>
+                        </a>
+                        <a href="#" onclick="showSection('attendance')" class="action-card">
+                            <span class="action-icon">📅</span>
+                            <h4>Check Attendance</h4>
+                            <p>View your visits</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fitness Profile Section -->
+        <section id="fitness" class="dashboard-section" style="display:none;">
+            <div class="container">
+                <h2>Your Fitness Profile</h2>
+                <div class="profile-card">
+                    <div id="profileContent">Loading...</div>
+                </div>
+                <button class="btn-primary" onclick="showSection('dashboard')">← Back to Dashboard</button>
+            </div>
+        </section>
+
+        <!-- Attendance Section -->
+        <section id="attendance" class="dashboard-section" style="display:none;">
+            <div class="container">
+                <h2>Your Attendance History</h2>
+                <div class="attendance-card">
+                    <div id="attendanceContent">Loading...</div>
+                </div>
+                <button class="btn-primary" onclick="showSection('dashboard')">← Back to Dashboard</button>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <p>© 2024 Be More Fit. Created by Jatin Sanap & Adarsh Patil.</p>
+    </footer>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
